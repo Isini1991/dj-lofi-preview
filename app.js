@@ -39,13 +39,13 @@ const signMaterial=new THREE.MeshStandardMaterial({map:signTexture,roughness:.92
 const signFace=new THREE.Mesh(new THREE.PlaneGeometry(98,36),signMaterial);signFace.position.z=3.1;signFace.scale.y=-1;signGroup.add(signFace);
 const powerButton=new THREE.Mesh(new THREE.BoxGeometry(8,2,2),new THREE.MeshBasicMaterial({color:0x92794e}));powerButton.position.set(0,-24.5,1);signGroup.add(powerButton);
 // Project every surface into the photographed wall's vanishing direction.
-// Front left is nearer/larger; the right edge recedes. Extrusion exposes top/right.
+// Follow the adjacent wall posters: near-parallel edges rise slightly to the right.
 function projectSignGeometry(geometry){
- const corners=[[-55,-22],[53,-26],[53,20],[-55,25]];
+ const corners=[[-55,-23],[55,-26],[54.5,22],[-55.5,25]];
  const [a,b,c,d]=corners,dx1=b[0]-c[0],dx2=d[0]-c[0],dy1=b[1]-c[1],dy2=d[1]-c[1],sx=a[0]-b[0]+c[0]-d[0],sy=a[1]-b[1]+c[1]-d[1],den=dx1*dy2-dx2*dy1;
  const g=(sx*dy2-dx2*sy)/den,h=(dx1*sy-sx*dy1)/den,xx=b[0]-a[0]+g*b[0],xy=d[0]-a[0]+h*d[0],yx=b[1]-a[1]+g*b[1],yy=d[1]-a[1]+h*d[1];
  const positions=geometry.attributes.position;
- for(let i=0;i<positions.count;i++){const u=(positions.getX(i)+55)/110,v=(positions.getY(i)+24)/48,z=positions.getZ(i),q=1+g*u+h*v,depth=(3.1-z)/6.1;positions.setXYZ(i,(a[0]+xx*u+xy*v)/q+depth*4,(a[1]+yx*u+yy*v)/q-depth*3,z);}
+ for(let i=0;i<positions.count;i++){const u=(positions.getX(i)+55)/110,v=(positions.getY(i)+24)/48,z=positions.getZ(i),q=1+g*u+h*v,depth=(3.1-z)/6.1;positions.setXYZ(i,(a[0]+xx*u+xy*v)/q-depth*1.2,(a[1]+yx*u+yy*v)/q+depth*.8,z);}
  positions.needsUpdate=true;geometry.computeVertexNormals();
 }
 // Subdivision also projects the lettering, rather than merely tilting its outline.
