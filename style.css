@@ -223,6 +223,7 @@ body #frame button:is(#desk-hotspot,#turntable-hotspot,#table-records-hotspot,#r
 #welcome button{background:none;color:#f4e4c7;border:0;border-bottom:1px solid #cbb18380;border-radius:0;padding:7px 0;font-weight:400;box-shadow:none;text-shadow:0 1px 6px #000}
 #welcome button span{margin-left:0;line-height:1}
 #welcome button,body.portrait #welcome button{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;width:fit-content;padding:9px 0;line-height:1.25;white-space:nowrap;text-align:left}
+#welcome button:focus-visible{outline:0;border-bottom-color:#ffe0a7;box-shadow:0 1px 0 #ffe0a7}
 @media(max-width:700px){body.portrait #scene-window::after{background:none}body.portrait #room-book-hotspot{height:calc(44px / var(--scene-scale))}}
 
 @media(max-width:700px){body.portrait #frame button:is(#desk-hotspot,#turntable-hotspot,#table-records-hotspot,#room-book-hotspot,#desk-book-hotspot,#shelves-hotspot){width:calc(44px / var(--scene-scale));height:calc(44px / var(--scene-scale));transform:translate(-50%,-50%)}}
