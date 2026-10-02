@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>DJ Lofi · A room for listening</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"><script defer src="./vendor/gsap.min.js"></script><script type="module" src="app.js"></script></head>
+<body data-view="room" data-entry="waiting">
+<section id="entrance" role="dialog" aria-modal="true" aria-labelledby="entrance-title"><div class="entrance-copy"><p class="eyebrow">DJ LOFI</p><h1 id="entrance-title">Analog guy<br>in a digital world.</h1><button id="enter-room" disabled>Enter the room <span>↗</span></button><p class="entrance-hint" role="status">A room for listening.</p></div></section>
+<main id="experience" aria-label="DJ Lofi listening room" inert>
+  <div id="scene-window">
+  <div id="frame">
+    <img id="room-photo" class="photo" src="assets/room-desk-shared-v1.png" alt="A cozy record-filled room with a fixed listening desk, upright sleeve, notebook, headphones and microphone">
+    <img id="desk-photo" class="photo" src="assets/turntable-detail-v1.png" alt="A detailed close view of the listening desk turntable, with its original lamp, record sleeve and notebook">
+    <img id="book-photo" class="photo" src="assets/notebook.png" alt="An open aged notebook on the wooden desk">
+    <div id="entrance-lighting" aria-hidden="true">
+      <img id="room-unlit" class="photo" src="assets/room-unlit-v1.png" alt="">
+      <img id="entry-desk-light" class="photo" src="assets/room-desk-shared-v1.png" alt="">
+      <img id="entry-globe-light" class="photo" src="assets/room-desk-shared-v1.png" alt="">
+      <img id="entry-room-lit" class="photo" src="assets/room-desk-shared-v1.png" alt="">
+    </div>
+    <img id="permanent-poster" src="assets/desk-original.png" alt="" aria-hidden="true">
+    <canvas id="record-layer" aria-hidden="true"></canvas>
+    <button id="sign-toggle" class="room-only" aria-label="Switch the ON AIR sign off" aria-pressed="false"><span class="sr-only">ON AIR sign power</span></button>
+    <div id="desk-sleeve" class="sleeve" aria-label="Current episode cover"></div>
+    <button id="cover-records" type="button" aria-label="Browse Records from the cover on the desk" aria-controls="archive"></button>
+    <div id="room-sleeve" class="sleeve" aria-hidden="true"></div>
+    <img id="desk-occlusion" src="assets/room-desk-shared-v1.png" alt="" aria-hidden="true">
+    <img id="room-mixer-occlusion" src="assets/room-desk-shared-v1.png" alt="" aria-hidden="true">
+    <img id="detail-turntable-occlusion" class="detail-foreground" src="assets/turntable-detail-v1.png" alt="" aria-hidden="true">
+    <img id="detail-mixer-occlusion" class="detail-foreground" src="assets/turntable-detail-v1.png" alt="" aria-hidden="true">
+    <div id="room-shade" aria-hidden="true"></div>
+    <button id="desk-hotspot" class="hotspot scene-pin room-only" aria-label="Take a seat at the listening desk"><span>Take a seat ↗</span></button>
+    <button id="turntable-hotspot" class="hotspot scene-pin equipment-entry" aria-label="Explore the turntable"><span>Turntable ↗</span></button>
+    <button id="table-records-hotspot" class="hotspot scene-pin table-entry" aria-label="Browse radio shows by the record crate beside the desk"><span>Records ↗</span></button>
+    <button id="room-book-hotspot" class="hotspot scene-pin room-only" aria-label="Open the notebook"><span>Notes ↗</span></button>
+    <button id="shelves-hotspot" class="scene-pin" aria-label="Browse records on the shelves"><span>Collection ↗</span></button>
+    <button id="physical-play" class="hotspot desk-only" aria-label="Play or pause the record"><span class="sr-only">Play / pause</span></button>
+    <div id="volume-knob" aria-hidden="true"><div class="knob-rotor"><i></i></div></div>
+    <div id="device-controls" class="desk-only"><label>Volume <input id="device-volume" type="range" min="0" max="1" step="0.01" value="0.45"></label><input id="device-progress" aria-label="Record position" type="range" min="0" max="100" value="0" step="0.1"><output id="device-time">00:00</output></div>
+    <button id="desk-book-hotspot" class="hotspot scene-pin desk-only" aria-label="Read the notebook"><span>Open notes ↗</span></button>
+    <section id="paper-left" class="paper book-only"><h1>Notes</h1><div id="note-list"></div></section>
+    <article id="paper-right" class="paper book-only"><div class="paper-scroll"><p id="note-kind" class="eyebrow">From the notebook</p><h2 id="note-title"></h2><p id="note-date" hidden></p><p id="note-text"></p><a id="note-source" target="_blank" rel="noopener noreferrer">Read on Substack ↗</a></div><div class="page-nav"><button id="previous-note">← Previous</button><button id="next-note">Next →</button></div></article>
+  </div>
+  <video id="journey" muted playsinline preload="metadata" aria-label="Camera journey to the listening desk"></video>
+  </div>
+  <div id="light-wash" aria-hidden="true"></div>
+  <header><a class="identity" href="#room" data-go="room">DJ LOFI<span>A room for listening</span></a><div class="local-time"><span id="portland-time"></span><small>Portland, Oregon</small></div></header>
+  <div id="welcome"><p class="eyebrow">Dusty grooves. Open ears.</p><h1><span class="desktop-welcome">Come in.<br>Stay for a record.</span><span class="mobile-welcome">Come in.<small>Stay for a record.</small></span></h1><button data-go="seat">Take a seat <span>↗</span></button></div>
+  <div id="room-explore"><button id="look-shelves">← Explore the shelves</button><button id="look-desk">Back to the desk →</button><small>Drag to look around</small></div>
+  <button id="back" data-go="room">← Back to the room</button>
+  <div id="desk-caption"><span class="eyebrow">Turntable · The listening station</span><h2 id="current-title"></h2><p id="audio-status">Original episode audio</p><a id="episode-source" target="_blank" rel="noopener noreferrer">Open original show ↗</a><div id="desk-focus" aria-label="Explore the desk"><button data-focus="record" aria-pressed="true">The record</button><button data-focus="sleeve" aria-pressed="false">The sleeve →</button><small>Swipe to explore</small></div></div>
+  <div id="seat-caption"><p class="eyebrow">At the listening desk</p><h2>A seat for listening.</h2><p>Choose a show, explore the turntable, or open the notebook.</p><div><button data-go="desk">Turntable ↗</button><button id="seat-records">Records ↗</button><button data-go="book">Notes ↗</button></div></div>
+  <div id="mobile-note-picker"><label for="mobile-notes">In the notebook</label><div class="mobile-note-row"><button id="mobile-previous-note" aria-label="Previous note">←</button><select id="mobile-notes"></select><button id="mobile-next-note" aria-label="Next note">→</button></div><div id="notebook-pages" aria-label="Notebook pages"><button data-page="contents" aria-pressed="true">← Contents</button><button data-page="writing" aria-pressed="false">Writing →</button></div></div>
+  <aside id="archive" aria-label="Record archive" inert><div class="archive-heading"><span>From the shelves</span><button id="close-archive" aria-label="Close archive">×</button></div><div class="archive-tabs" role="tablist" aria-label="Browse the shelves"><button id="shows-tab" role="tab" aria-selected="true" aria-controls="shows-panel">Radio shows</button><button id="collection-tab" role="tab" aria-selected="false" aria-controls="collection-panel">Collection</button></div><label class="archive-search"><span class="sr-only">Search the shelves</span><input id="archive-search" type="search" placeholder="Find a record or a show…"></label><p id="archive-count" class="archive-count" role="status"></p><section id="shows-panel" role="tabpanel" aria-labelledby="shows-tab"><div id="episode-list"></div></section><section id="collection-panel" role="tabpanel" aria-labelledby="collection-tab" hidden><p class="collection-intro">Records shared from Lofi’s collection. Pull out a sleeve for a closer look.</p><div id="collection-list"></div></section></aside>
+  <section id="mixcloud-player" aria-label="Official Mixcloud player" hidden><div class="mixcloud-heading"><span>Playing on Mixcloud</span><a id="mixcloud-source" target="_blank" rel="noopener noreferrer">Open original ↗</a></div><iframe id="mixcloud-frame" title="DJ Lofi radio show on Mixcloud" allow="autoplay; encrypted-media" loading="lazy"></iframe></section>
+  <footer><nav aria-label="Explore the room"><button data-go="room">Room</button><button data-go="seat">Take a seat</button><button data-go="desk">Turntable</button><button id="open-archive">Records</button><button data-go="book">Notes</button></nav><div class="transport"><button id="play" aria-label="Play record">▶</button><div class="track-meta"><span id="transport-title"></span><small id="play-status">Ready to listen</small></div><label class="footer-volume">Volume <input id="volume" type="range" min="0" max="1" step="0.01" value="0.45"></label></div><button id="open-studio" class="studio-link">Edit content</button></footer>
+  <p id="message" role="status"></p>
+</main>
+<dialog id="studio"><div class="dialog-heading"><div><p class="eyebrow">Listening room study</p><h2>Edit content</h2></div><button id="close-studio" aria-label="Close editor">×</button></div><div class="editor-tabs"><button data-editor="episode" class="active">New episode</button><button data-editor="record">New record</button><button data-editor="note">New note</button><button data-editor="video">Camera video</button></div>
+<form id="content-form"><label>Title<input id="content-title" maxlength="120" required></label><div class="episode-field"><label>Published date<input id="content-date" type="date"></label><label>Cover image<input id="content-cover" type="file" accept="image/png,image/jpeg,image/webp"></label><label>Audio URL<input id="content-audio" type="url" placeholder="https://…"></label><label>Or local audio<input id="content-local-audio" type="file" accept="audio/*"></label></div><div class="record-field"><label>Artist<input id="content-artist" maxlength="120"></label><label>Format<select id="content-format"><option>Vinyl</option><option>Vinyl single</option><option>Vinyl box set</option><option>CD</option><option>Cassette</option></select></label><label>Record photograph<input id="record-cover" type="file" accept="image/png,image/jpeg,image/webp"></label></div><label class="note-field">Writing<textarea id="content-text" rows="6" maxlength="12000"></textarea></label><label>Source link (optional)<input id="content-source" type="url" placeholder="https://…"></label><p class="editor-help">Writing, covers and URLs save in this browser. Local media files last for this session.</p><button class="primary" type="submit">Add to the room</button></form>
+<section id="video-editor"><p>Add a silent camera journey from the room to the desk. Music keeps playing during the journey.</p><label>Room → desk video<input id="camera-video" type="file" accept="video/mp4,video/webm"></label><p id="video-status">No camera video added. The same photograph zooms smoothly.</p><div class="frame-downloads"><a href="flow/01-room-shared-v1.png" download>Download first frame ↓</a><a href="flow/02-desk-shared-v1.png" download>Download last frame ↓</a><a href="flow/room-to-desk-shared-v1.txt" download>Download Flow prompt ↓</a></div><button id="preview-video" class="primary" type="button" disabled>Preview journey</button><button id="remove-video" type="button">Remove video</button><p class="editor-help">MP4 or WebM, up to 80 MB. A local video is kept only until this page is closed or reloaded. Review poster scale, the desk and the notebook for warping before using the clip.</p></section>
+<div class="editor-bottom"><button id="export-content">Export content ↓</button><button id="reset-content">Restore imported archive</button></div><p id="editor-error" role="alert"></p></dialog>
+<audio id="audio" preload="metadata"></audio>
+</body></html>
+
+
+
+
+
