@@ -256,15 +256,14 @@ body #experience>header,body #experience>footer,body #welcome,body #room-explore
 body[data-view=desk] #device-seek{width:475px;height:32px}
 body[data-view=desk] #device-seek #device-progress{left:0;top:7px;width:390px;height:24px!important;background:linear-gradient(#bca27370,#bca27370) center/100% 4px no-repeat}
 body[data-view=desk] #device-seek #device-time{left:404px;top:9px;font-size:14px}
-body[data-view=desk] #physical-play{left:479px;top:495px;width:72px;height:42px;border-radius:5px;border:1px solid #ddb778b0;background:#21150ddd;display:flex;align-items:center;justify-content:center;gap:7px;color:#ffe0a7;box-shadow:0 2px 7px #0007}
-body[data-view=desk] #physical-play span{position:static;transform:none;background:none;border:0;padding:0;font:12px Arial,sans-serif}
-body[data-view=desk] #physical-play .device-play-icon{font-size:13px}
-body[data-view=desk] #physical-play:hover,body[data-view=desk] #physical-play:focus-visible{background:#48301de8;border-color:#ffe0a7}
-body[data-view=desk] #physical-play[aria-pressed=true]{border-color:#efc47d;color:#ffeac6}
+body[data-view=desk] #physical-play{left:515px;top:518px;width:44px;height:44px;transform:translate(-50%,-50%);border:0;background:none;display:grid;place-items:center;color:#ffe0a7;box-shadow:none}
+body[data-view=desk] #physical-play .device-play-label{display:none}
+body[data-view=desk] #physical-play .device-play-icon{position:static;transform:none;display:grid;place-items:center;width:22px;height:22px;padding:0;border:1px solid #ddb77890;border-radius:50%;background:#21150d80;font:10px Arial,sans-serif}
+body[data-view=desk] #physical-play:hover .device-play-icon,body[data-view=desk] #physical-play:focus-visible .device-play-icon{border-color:#ffe0a7}
+body[data-view=desk] #physical-play[aria-pressed=true]{color:#ffeac6}
 @media(max-width:700px){
- body.portrait[data-view=desk] #physical-play{left:515px;top:500px;width:calc(66px / var(--scene-scale));height:calc(44px / var(--scene-scale));transform:translate(-50%,-50%)}
- body.portrait[data-view=desk] #physical-play span{font-size:calc(11px / var(--scene-scale))}
- body.portrait[data-view=desk] #physical-play .device-play-icon{font-size:calc(12px / var(--scene-scale))}
+ body.portrait[data-view=desk] #physical-play{width:calc(44px / var(--scene-scale));height:calc(44px / var(--scene-scale))}
+ body.portrait[data-view=desk] #physical-play .device-play-icon{width:calc(20px / var(--scene-scale));height:calc(20px / var(--scene-scale));font-size:calc(9px / var(--scene-scale))}
 }
 
 /* The physical sleeve itself opens Records, using its exact projected corners. */
