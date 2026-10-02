@@ -21,13 +21,16 @@ const labelTexture=new THREE.CanvasTexture(labelCanvas);labelTexture.colorSpace=
 const label=new THREE.Mesh(new THREE.CircleGeometry(1,80),new THREE.MeshBasicMaterial({map:labelTexture,transparent:true,opacity:.88,side:THREE.DoubleSide}));labelGroup.add(label);
 const spindle=new THREE.Mesh(new THREE.CircleGeometry(1.2,20),new THREE.MeshBasicMaterial({color:0x9f978a,side:THREE.DoubleSide}));spindle.position.set(1076,404.5,.1);scene.add(spindle);
 let signOn=false,entryPhase='waiting';
-const signGroup=new THREE.Group();signGroup.position.set(1225,148,0);scene.add(signGroup);
+const signPlacement={x:1320,y:148};
+$('#sign-toggle').style.setProperty('--sign-x',`${signPlacement.x}px`);
+$('#sign-toggle').style.setProperty('--sign-y',`${signPlacement.y}px`);
+const signGroup=new THREE.Group();signGroup.position.set(signPlacement.x,signPlacement.y,0);scene.add(signGroup);
 // Walnut light box: real geometry and procedural textures keep it switchable.
 const woodCanvas=document.createElement('canvas');woodCanvas.width=512;woodCanvas.height=256;
-const woodCtx=woodCanvas.getContext('2d');woodCtx.fillStyle='#5b3823';woodCtx.fillRect(0,0,512,256);
+const woodCtx=woodCanvas.getContext('2d');woodCtx.fillStyle='#986443';woodCtx.fillRect(0,0,512,256);
 for(let row=0;row<256;row++){const tone=34+Math.sin(row*.57)*8+Math.sin(row*.13)*7;woodCtx.strokeStyle=`rgba(151,104,65,${.08+tone/240})`;woodCtx.lineWidth=row%7===0?1.2:.45;woodCtx.beginPath();for(let x=0;x<=512;x+=8){const y=row+Math.sin(x*.017+row*.1)*1.3;x?woodCtx.lineTo(x,y):woodCtx.moveTo(x,y);}woodCtx.stroke();}
 const woodTexture=new THREE.CanvasTexture(woodCanvas);woodTexture.colorSpace=THREE.SRGBColorSpace;
-const signBacking=new THREE.Mesh(new THREE.BoxGeometry(110,48,6),[0x846040,0x59402b,0xab8057,0x342319,0xf6d4ac,0x322118].map(color=>new THREE.MeshBasicMaterial({map:woodTexture,color})));signGroup.add(signBacking);
+const signBacking=new THREE.Mesh(new THREE.BoxGeometry(110,48,6),[0xa18166,0xbca080,0x604c3b,0xf0d3ad,0xcba889,0x604c3b].map(color=>new THREE.MeshBasicMaterial({map:woodTexture,color,side:THREE.DoubleSide})));signGroup.add(signBacking);
 const rim=new THREE.Mesh(new THREE.PlaneGeometry(100,38),new THREE.MeshBasicMaterial({color:0x21140d,side:THREE.DoubleSide}));rim.position.z=3.05;signGroup.add(rim);
 const signCanvas=document.createElement('canvas');signCanvas.width=784;signCanvas.height=272;
 const signCtx=signCanvas.getContext('2d'),faceGradient=signCtx.createRadialGradient(392,130,10,392,136,430);
@@ -38,14 +41,14 @@ const signTexture=new THREE.CanvasTexture(signCanvas);signTexture.colorSpace=THR
 const signMaterial=new THREE.MeshStandardMaterial({map:signTexture,roughness:.92,metalness:0,emissive:0xffe5b1,emissiveMap:signTexture,emissiveIntensity:0,side:THREE.DoubleSide});
 const signFace=new THREE.Mesh(new THREE.PlaneGeometry(98,36),signMaterial);signFace.position.z=3.1;signFace.scale.y=-1;signGroup.add(signFace);
 const powerButton=new THREE.Mesh(new THREE.BoxGeometry(8,2,2),new THREE.MeshBasicMaterial({color:0x92794e}));powerButton.position.set(0,-24.5,1);signGroup.add(powerButton);
-// Project every surface into the photographed wall's vanishing direction.
-// Follow the adjacent wall posters: near-parallel edges rise slightly to the right.
+for(const x of [-40,40]){const foot=new THREE.Mesh(new THREE.BoxGeometry(9,2,4),new THREE.MeshBasicMaterial({color:0x241b13,side:THREE.DoubleSide}));foot.position.set(x,25,0);signGroup.add(foot);}
+// Project the front onto the sill's edge, with a visible top and left return.
 function projectSignGeometry(geometry){
  const corners=[[-55,-23],[55,-26],[54.5,22],[-55.5,25]];
  const [a,b,c,d]=corners,dx1=b[0]-c[0],dx2=d[0]-c[0],dy1=b[1]-c[1],dy2=d[1]-c[1],sx=a[0]-b[0]+c[0]-d[0],sy=a[1]-b[1]+c[1]-d[1],den=dx1*dy2-dx2*dy1;
  const g=(sx*dy2-dx2*sy)/den,h=(dx1*sy-sx*dy1)/den,xx=b[0]-a[0]+g*b[0],xy=d[0]-a[0]+h*d[0],yx=b[1]-a[1]+g*b[1],yy=d[1]-a[1]+h*d[1];
  const positions=geometry.attributes.position;
- for(let i=0;i<positions.count;i++){const u=(positions.getX(i)+55)/110,v=(positions.getY(i)+24)/48,z=positions.getZ(i),q=1+g*u+h*v,depth=(3.1-z)/6.1;positions.setXYZ(i,(a[0]+xx*u+xy*v)/q-depth*1.2,(a[1]+yx*u+yy*v)/q+depth*.8,z);}
+ for(let i=0;i<positions.count;i++){const u=(positions.getX(i)+55)/110,v=(positions.getY(i)+24)/48,z=positions.getZ(i),q=1+g*u+h*v,depth=(3.1-z)/6.1;positions.setXYZ(i,(a[0]+xx*u+xy*v)/q-depth*7,(a[1]+yx*u+yy*v)/q-depth*5.5,z);}
  positions.needsUpdate=true;geometry.computeVertexNormals();
 }
 // Subdivision also projects the lettering, rather than merely tilting its outline.
@@ -54,12 +57,12 @@ signFace.geometry.dispose();signFace.geometry=new THREE.PlaneGeometry(98,36,24,1
 signFace.geometry.scale(1,-1,1);signFace.scale.y=1;
 for(const mesh of signGroup.children){mesh.geometry.translate(mesh.position.x,mesh.position.y,mesh.position.z);mesh.position.set(0,0,0);projectSignGeometry(mesh.geometry);}
 const shadowCanvas=document.createElement('canvas');shadowCanvas.width=256;shadowCanvas.height=128;
-const shadowCtx=shadowCanvas.getContext('2d');shadowCtx.shadowColor='rgba(0,0,0,.85)';shadowCtx.shadowBlur=12;shadowCtx.fillStyle='rgba(0,0,0,.5)';shadowCtx.fillRect(20,18,216,92);
-const contactShadow=new THREE.Mesh(new THREE.PlaneGeometry(124,60,16,8),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(shadowCanvas),transparent:true,opacity:.65,depthWrite:false,side:THREE.DoubleSide}));
-contactShadow.geometry.translate(1,3,-4);projectSignGeometry(contactShadow.geometry);signGroup.add(contactShadow);
-scene.add(new THREE.AmbientLight(0xffe1bd,.55));const signLight=new THREE.PointLight(0xffbd72,0,200,2);signLight.position.set(1225,148,35);scene.add(signLight);
+const shadowCtx=shadowCanvas.getContext('2d');shadowCtx.shadowColor='rgba(0,0,0,.8)';shadowCtx.shadowBlur=10;shadowCtx.fillStyle='rgba(0,0,0,.7)';shadowCtx.beginPath();shadowCtx.ellipse(128,64,104,22,0,0,Math.PI*2);shadowCtx.fill();
+const contactShadow=new THREE.Mesh(new THREE.PlaneGeometry(126,10),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(shadowCanvas),transparent:true,opacity:.7,depthWrite:false,side:THREE.DoubleSide}));
+contactShadow.position.set(-2,25,-4);contactShadow.rotation.z=-.028;signGroup.add(contactShadow);
+scene.add(new THREE.AmbientLight(0xffe1bd,.55));const signLight=new THREE.PointLight(0xffbd72,0,200,2);signLight.position.set(signPlacement.x,signPlacement.y,35);scene.add(signLight);
 const glowCanvas=document.createElement('canvas');glowCanvas.width=glowCanvas.height=256;const glowCtx=glowCanvas.getContext('2d'),glowGradient=glowCtx.createRadialGradient(128,128,8,128,128,128);glowGradient.addColorStop(0,'rgba(255,190,100,.7)');glowGradient.addColorStop(.4,'rgba(255,150,60,.2)');glowGradient.addColorStop(1,'rgba(255,140,50,0)');glowCtx.fillStyle=glowGradient;glowCtx.fillRect(0,0,256,256);
-const signGlow=new THREE.Mesh(new THREE.PlaneGeometry(210,120),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(glowCanvas),transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));signGlow.position.set(1225,148,-2);scene.add(signGlow);
+const signGlow=new THREE.Mesh(new THREE.PlaneGeometry(164,18),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(glowCanvas),transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));signGlow.position.set(signPlacement.x,signPlacement.y+25,-3);signGlow.rotation.z=-.028;scene.add(signGlow);
 const signPower={amount:0};
 function paintSign(){signMaterial.emissiveIntensity=signPower.amount*.72;signLight.intensity=signPower.amount*180;signGlow.material.opacity=signPower.amount*.35;ensureRender();}
 function setSign(on,animate=true){signOn=on;$('#sign-toggle').setAttribute('aria-pressed',String(on));$('#sign-toggle').ariaLabel=`Switch the ON AIR sign ${on?'off':'on'}`;gsap.killTweensOf(signPower);if(animate&&!reduced.matches)gsap.to(signPower,{amount:on?1:0,duration:.4,onUpdate:paintSign});else{signPower.amount=on?1:0;paintSign();}}
