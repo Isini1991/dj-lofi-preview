@@ -166,7 +166,7 @@ $('#enter-room').onclick=()=>{
 };
 paintEntranceLights();
 updateContent();setVolume(volume);updateTransport();applyView('room');setEditor('episode');portlandLight();setInterval(portlandLight,30000);
-Promise.all([$('#room-photo').decode(),$('#room-unlit').decode()]).catch(()=>{}).then(()=>{$('#enter-room').disabled=false;$('#enter-room').focus({preventScroll:true});});
+Promise.all([$('#room-photo').decode(),$('#room-unlit').decode()]).then(()=>{fitFrame();document.body.dataset.roomReady='true';$('.entrance-hint').textContent='A room for listening.';$('#enter-room').disabled=false;$('#enter-room').focus({preventScroll:true});}).catch(()=>{$('.entrance-hint').textContent='The room could not load. Please refresh to try again.';});
 window.lofiHybrid={getState:()=>({view,playing,volume,title:current().title,noteTitle:note().title,episodes:data.episodes.length,notes:data.notes.length,collection:data.collection.length,recordAngle:label.rotation.z,hasWebGL:!!renderer.getContext(),hasVideo:!!videoUrl,traveling:document.body.classList.contains('traveling'),cover:current().cover,fit,videoName,entryPhase,entranceLights:{desk:entranceLights.desk,globe:entranceLights.globe,ambient:entranceLights.ambient},entryStages:[...entryStages]}),setView};
 
 
