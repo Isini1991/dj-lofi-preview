@@ -31,9 +31,9 @@
     <button id="table-records-hotspot" class="hotspot scene-pin table-entry" aria-label="Browse radio shows by the record crate beside the desk"><span>Records ↗</span></button>
     <button id="room-book-hotspot" class="hotspot scene-pin room-only" aria-label="Open the notebook"><span>Notes ↗</span></button>
     <button id="shelves-hotspot" class="scene-pin" aria-label="Browse records on the shelves"><span>Collection ↗</span></button>
-    <button id="physical-play" class="hotspot desk-only" aria-label="Play or pause the record"><span class="sr-only">Play / pause</span></button>
+    <button id="physical-play" class="hotspot desk-only" aria-label="Play or pause the record"><span class="device-play-icon" aria-hidden="true">▶</span><span class="device-play-label">Play</span></button>
     <div id="volume-knob" aria-hidden="true"><div class="knob-rotor"><i></i></div></div>
-    <div id="device-controls" class="desk-only"><label>Volume <input id="device-volume" type="range" min="0" max="1" step="0.01" value="0.45"></label><input id="device-progress" aria-label="Record position" type="range" min="0" max="100" value="0" step="0.1"><output id="device-time">00:00</output></div>
+    <div id="device-controls" class="desk-only"><label>Volume <input id="device-volume" type="range" min="0" max="1" step="0.01" value="0.45"></label><div id="device-seek"><input id="device-progress" aria-label="Record position" type="range" min="0" max="100" value="0" step="0.1"><output id="device-time">00:00</output></div></div>
     <button id="desk-book-hotspot" class="hotspot scene-pin desk-only" aria-label="Read the notebook"><span>Open notes ↗</span></button>
     <section id="paper-left" class="paper book-only"><h1>Notes</h1><div id="note-list"></div></section>
     <article id="paper-right" class="paper book-only"><div class="paper-scroll"><p id="note-kind" class="eyebrow">From the notebook</p><h2 id="note-title"></h2><p id="note-date" hidden></p><p id="note-text"></p><a id="note-source" target="_blank" rel="noopener noreferrer">Read on Substack ↗</a></div><div class="page-nav"><button id="previous-note">← Previous</button><button id="next-note">Next →</button></div></article>
