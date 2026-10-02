@@ -21,7 +21,7 @@ const labelTexture=new THREE.CanvasTexture(labelCanvas);labelTexture.colorSpace=
 const label=new THREE.Mesh(new THREE.CircleGeometry(1,80),new THREE.MeshBasicMaterial({map:labelTexture,transparent:true,opacity:.88,side:THREE.DoubleSide}));labelGroup.add(label);
 const spindle=new THREE.Mesh(new THREE.CircleGeometry(1.2,20),new THREE.MeshBasicMaterial({color:0x9f978a,side:THREE.DoubleSide}));spindle.position.set(1076,404.5,.1);scene.add(spindle);
 let signOn=false,entryPhase='waiting';
-const signGroup=new THREE.Group();signGroup.position.set(1225,153,0);scene.add(signGroup);
+const signGroup=new THREE.Group();signGroup.position.set(1225,148,0);scene.add(signGroup);
 // Walnut light box: real geometry and procedural textures keep it switchable.
 const woodCanvas=document.createElement('canvas');woodCanvas.width=512;woodCanvas.height=256;
 const woodCtx=woodCanvas.getContext('2d');woodCtx.fillStyle='#5b3823';woodCtx.fillRect(0,0,512,256);
@@ -57,9 +57,9 @@ const shadowCanvas=document.createElement('canvas');shadowCanvas.width=256;shado
 const shadowCtx=shadowCanvas.getContext('2d');shadowCtx.shadowColor='rgba(0,0,0,.85)';shadowCtx.shadowBlur=12;shadowCtx.fillStyle='rgba(0,0,0,.5)';shadowCtx.fillRect(20,18,216,92);
 const contactShadow=new THREE.Mesh(new THREE.PlaneGeometry(124,60,16,8),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(shadowCanvas),transparent:true,opacity:.65,depthWrite:false,side:THREE.DoubleSide}));
 contactShadow.geometry.translate(1,3,-4);projectSignGeometry(contactShadow.geometry);signGroup.add(contactShadow);
-scene.add(new THREE.AmbientLight(0xffe1bd,.55));const signLight=new THREE.PointLight(0xffbd72,0,200,2);signLight.position.set(1225,153,35);scene.add(signLight);
+scene.add(new THREE.AmbientLight(0xffe1bd,.55));const signLight=new THREE.PointLight(0xffbd72,0,200,2);signLight.position.set(1225,148,35);scene.add(signLight);
 const glowCanvas=document.createElement('canvas');glowCanvas.width=glowCanvas.height=256;const glowCtx=glowCanvas.getContext('2d'),glowGradient=glowCtx.createRadialGradient(128,128,8,128,128,128);glowGradient.addColorStop(0,'rgba(255,190,100,.7)');glowGradient.addColorStop(.4,'rgba(255,150,60,.2)');glowGradient.addColorStop(1,'rgba(255,140,50,0)');glowCtx.fillStyle=glowGradient;glowCtx.fillRect(0,0,256,256);
-const signGlow=new THREE.Mesh(new THREE.PlaneGeometry(210,120),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(glowCanvas),transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));signGlow.position.set(1225,153,-2);scene.add(signGlow);
+const signGlow=new THREE.Mesh(new THREE.PlaneGeometry(210,120),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(glowCanvas),transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));signGlow.position.set(1225,148,-2);scene.add(signGlow);
 const signPower={amount:0};
 function paintSign(){signMaterial.emissiveIntensity=signPower.amount*.72;signLight.intensity=signPower.amount*180;signGlow.material.opacity=signPower.amount*.35;ensureRender();}
 function setSign(on,animate=true){signOn=on;$('#sign-toggle').setAttribute('aria-pressed',String(on));$('#sign-toggle').ariaLabel=`Switch the ON AIR sign ${on?'off':'on'}`;gsap.killTweensOf(signPower);if(animate&&!reduced.matches)gsap.to(signPower,{amount:on?1:0,duration:.4,onUpdate:paintSign});else{signPower.amount=on?1:0;paintSign();}}
